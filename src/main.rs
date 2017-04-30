@@ -25,9 +25,19 @@ enum Instruction {
     ReturnValue,
 }
 
-type InstructionList = Vec<Instruction>;
+#[derive(Debug, PartialEq, Eq)]
+enum PythonType {
+    Int(i64),
+}
 
-fn parse_test_instruction_list(filename: &str) -> Result<InstructionList> {
+#[derive(Debug)]
+struct Interpreter {
+    stack: Vec<PythonType>,
+    instruction_list: Vec<Instruction>,
+}
+
+/// Helper function to get instructions from a disassembly file
+fn parse_test_instruction_list(filename: &str) -> Result<Vec<Instruction>> {
     let mut fs = File::open(filename)?;
     let mut contents = String::new();
     fs.read_to_string(&mut contents)?;
